@@ -9,7 +9,7 @@ extern long long total_step;
 extern long long consecutive_better_soft;
 extern char * file_name;
 
-void ISDist::update_goodvarstack1(int flipvar)
+void SPBMaxSAT::update_goodvarstack1(int flipvar)
 {
 	int v;
 	//remove the vars no longer goodvar in goodvar stack
@@ -37,7 +37,7 @@ void ISDist::update_goodvarstack1(int flipvar)
 		}
 	}
 }
-void ISDist::update_goodvarstack2(int flipvar)
+void SPBMaxSAT::update_goodvarstack2(int flipvar)
 {
 	if (score[flipvar] > 0 && already_in_goodvar_stack[flipvar] == -1)
 	{
@@ -75,7 +75,7 @@ void ISDist::update_goodvarstack2(int flipvar)
 	}
 }
 
-void ISDist::flip(int flipvar)
+void SPBMaxSAT::flip(int flipvar)
 {
 	int i, v, c;
 	int index;
@@ -177,7 +177,7 @@ void ISDist::flip(int flipvar)
 	//update_goodvarstack1(flipvar);
 }
 
-void ISDist::print_best_solution()
+void SPBMaxSAT::print_best_solution()
 {
 	if (best_soln_feasible == 0)
 		return;
@@ -195,7 +195,7 @@ void ISDist::print_best_solution()
 	printf("\n");
 }
 
-bool ISDist::verify_sol()
+bool SPBMaxSAT::verify_sol()
 {
 	int c, j, flag;
 	long long verify_unsat_weight = 0;
@@ -247,7 +247,7 @@ bool ISDist::verify_sol()
 	return 0;
 }
 
-void ISDist::simple_print(char* filename)
+void SPBMaxSAT::simple_print(char* filename)
 {
 	if (best_soln_feasible != 0)
 	{
@@ -262,7 +262,7 @@ void ISDist::simple_print(char* filename)
   	}
 }
 
-inline void ISDist::unsat(int clause)
+inline void SPBMaxSAT::unsat(int clause)
 {
 	if (org_clause_weight[clause] == top_clause_weight)
 	{
@@ -278,7 +278,7 @@ inline void ISDist::unsat(int clause)
 	}
 }
 
-inline void ISDist::sat(int clause)
+inline void SPBMaxSAT::sat(int clause)
 {
 	int index, last_unsat_clause;
 
