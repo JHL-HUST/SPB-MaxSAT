@@ -4,7 +4,7 @@
 #include "basis_pms.h"
 #include "deci.h"
 
-void ISDist::init(vector<int> &init_solution)
+void SPBMaxSAT::init(vector<int> &init_solution)
 {
     soft_large_weight_clauses_count = 0;
 
@@ -158,7 +158,7 @@ void ISDist::init(vector<int> &init_solution)
     }
 }
 
-int ISDist::pick_var()
+int SPBMaxSAT::pick_var()
 {
     int i, v;
     int best_var;
@@ -248,7 +248,7 @@ int ISDist::pick_var()
     return best_var;
 }
 
-void ISDist::local_search_with_decimation(char *inputfile)
+void SPBMaxSAT::local_search_with_decimation(char *inputfile)
 {
     Decimation deci(var_lit, var_lit_count, clause_lit, org_clause_weight, top_clause_weight);
     deci.make_space(num_clauses, num_vars);
@@ -313,7 +313,7 @@ void ISDist::local_search_with_decimation(char *inputfile)
     }
 }
 
-void ISDist::hard_increase_weights(){
+void SPBMaxSAT::hard_increase_weights(){
     int i, c, v;
     for (i = 0; i < hardunsat_stack_fill_pointer; ++i)
     {
@@ -337,7 +337,7 @@ void ISDist::hard_increase_weights(){
     return;
 }
 
-void ISDist::soft_increase_weights(){
+void SPBMaxSAT::soft_increase_weights(){
     int i, c, v;
 
     if (1 == problem_weighted)
@@ -416,7 +416,7 @@ void ISDist::soft_increase_weights(){
     return;
 }
 
-void ISDist::soft_smooth_weights()
+void SPBMaxSAT::soft_smooth_weights()
 {
     int i, clause, v;
 
@@ -447,7 +447,7 @@ void ISDist::soft_smooth_weights()
     return;
 }
 
-void ISDist::soft_increase_weights_not_partial()
+void SPBMaxSAT::soft_increase_weights_not_partial()
 {
     int i, c, v;
 
@@ -506,7 +506,7 @@ void ISDist::soft_increase_weights_not_partial()
     return;
 }
 
-void ISDist::update_clause_weights()
+void SPBMaxSAT::update_clause_weights()
 {
     if (num_hclauses > 0)
     {
