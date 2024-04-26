@@ -5,9 +5,9 @@
 #include "pms.h"
 #include <limits.h>
 
-ISDist::ISDist() {}
+SPBMaxSAT::SPBMaxSAT() {}
 
-bool ISDist::parse_parameters2(int argc, char **argv)
+bool SPBMaxSAT::parse_parameters2(int argc, char **argv)
 {
     int i = 0;
     int temp_para = 0;
@@ -96,7 +96,7 @@ bool ISDist::parse_parameters2(int argc, char **argv)
     return true;
 }
 
-void ISDist::settings()
+void SPBMaxSAT::settings()
 {
     local_soln_feasible = 1;
     cutoff_time = 300;
@@ -168,7 +168,7 @@ void ISDist::settings()
     }
 }
 
-void ISDist::build_neighbor_relation()
+void SPBMaxSAT::build_neighbor_relation()
 {
     int i, j, count;
     int v, c, n;
@@ -207,7 +207,7 @@ void ISDist::build_neighbor_relation()
     }
 }
 
-void ISDist::build_instance(char *filename)
+void SPBMaxSAT::build_instance(char *filename)
 {
     total_soft_length = 0;
     total_hard_length = 0;
@@ -407,7 +407,7 @@ void ISDist::build_instance(char *filename)
     best_soln_feasible = 0;
 }
 
-void ISDist::allocate_memory()
+void SPBMaxSAT::allocate_memory()
 {
     int malloc_var_length = num_vars + 10;
     int malloc_clause_length = num_clauses + 10;
@@ -462,7 +462,7 @@ void ISDist::allocate_memory()
     soft_clause_num_index = new int[malloc_clause_length];
 }
 
-void ISDist::free_memory()
+void SPBMaxSAT::free_memory()
 {
     int i;
     for (i = 0; i < num_clauses; i++)
