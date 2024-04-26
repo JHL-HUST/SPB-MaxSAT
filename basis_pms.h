@@ -42,7 +42,7 @@ static void start_timing()
 	times(&start_time);
 }
 
-class ISDist
+class SPBMaxSAT
 {
   private:
 	/***********non-algorithmic information ****************/
@@ -190,7 +190,7 @@ class ISDist
 	void soft_increase_weights_not_partial();
 
   public:
-	ISDist();
+	SPBMaxSAT();
 	void settings();
 	void build_instance(char *filename);
 	void local_search_with_decimation(char *inputfile);
