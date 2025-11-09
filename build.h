@@ -116,7 +116,7 @@ void SPBMaxSAT::settings()
             rwprob = 0.48;
             h_inc = 28;
             soft_increase_ratio = 1.001;
-            avg_soft_weight =  double(total_soft_weight) / num_sclauses;
+            avg_soft_weight =  double(top_clause_weight - 1) / num_sclauses;
             for (int i = 0; i < num_sclauses; ++i)
             {
                 int c = soft_clause_num_index[i];
@@ -228,16 +228,17 @@ void SPBMaxSAT::build_instance(char *filename)
     /*** build problem data structures of the instance ***/
     while (getline(infile, line))
     {
-        if (line[3] == 'n' && line[4] == 'v' && line[5] == 'a' && line[6] == 'r' && line[7] == 's')
+        if (line[0] == 'p')
         {
-            line[line.length()-1] = '\0';
-            int items = sscanf(line.c_str(), "%s %s %d", tempstr1, tempstr2, &num_vars);
-        }
-        
-        if (line[3] == 'n' && line[4] == 'c' && line[5] == 'l' && line[6] == 's')
-        {
-            line[line.length()-1] = '\0';
-            int items = sscanf(line.c_str(), "%s %s %d", tempstr1, tempstr2, &num_clauses);
+            int read_items;
+            num_vars = num_clauses = 0;
+            read_items = sscanf(line.c_str(), "%s %s %d %d %lld", tempstr1, tempstr2, &num_vars, &num_clauses, &top_clause_weight);
+
+            if (read_items < 5)
+            {
+                cout << "read item < 5 " << endl;
+                exit(-1);
+            }
             break;
         }
     }
@@ -262,34 +263,14 @@ void SPBMaxSAT::build_instance(char *filename)
     problem_weighted = 0;
     num_hclauses = num_sclauses = 0;
     unit_clause_count = 0;
-    // num_softvars = 0;
 
     int *redunt_test = new int[num_vars + 1];
     memset(redunt_test, 0, sizeof(int) * num_vars + 1);
     // Now, read the clauses, one at a time.
-    top_clause_weight = __LONG_LONG_MAX__;
-    total_soft_weight = 0;
     while (getline(infile, line))
     {
         if (line[0] == 'c')
             continue;
-        else if (line[0] == 'p')
-        {
-            int read_items;
-            num_vars = num_clauses = 0;
-            read_items = sscanf(line.c_str(), "%s %s %d %d %lld", tempstr1, tempstr2, &num_vars, &num_clauses, &top_clause_weight);
-
-            if (read_items < 5)
-            {
-                cout << "read item < 5 " << endl;
-                exit(-1);
-            }
-            //cout << top_clause_weight << endl;
-            iss.clear();
-            iss.str(line);
-            iss.seekg(0, ios::beg);
-            continue;
-        }
         else
         {
             iss.clear();
@@ -298,18 +279,11 @@ void SPBMaxSAT::build_instance(char *filename)
         }
         clause_lit_count[c] = 0;
 
-        if (line[0] == 'h')
-        {
-            iss >> tempstr1;
-            org_clause_weight[c] = __LONG_LONG_MAX__;
-        }
-        else
-            iss >> org_clause_weight[c];
+        iss >> org_clause_weight[c];
         if (org_clause_weight[c] != top_clause_weight)
         {
             if (org_clause_weight[c] != 1)
                 problem_weighted = 1;
-            total_soft_weight += org_clause_weight[c];
             soft_clause_num_index[num_sclauses++] = c;
         }
         else
@@ -359,11 +333,6 @@ void SPBMaxSAT::build_instance(char *filename)
                 clause_lit[c][i].sense = 0;
 
             var_lit_count[v]++;
-
-            // if (org_clause_weight[c] != top_clause_weight && insoftvars[v] == false){
-            //     insoftvars[v] = true;
-            //     softvars[num_softvars++] = v;
-            // }
         }
         clause_lit[c][i].var_num = 0;
         clause_lit[c][i].clause_num = -1;
