@@ -4,6 +4,17 @@ This repository contains the codes of the SPB-MaxSAT algorithm for the MaxSAT pr
 [Rethinking the Soft Conflict Pseudo Boolean Constraint on MaxSAT Local Search Solvers](https://arxiv.org/abs/2401.10589) <br>
 Jiongzhi Zheng, Zhuo Chen, Chu-Min Li, Kun He <br> <br>
 
+Supported Format
+----
+USW-LS currently supports the format of instances for MaxSAT Evaluations before 2022.
+
+To understand the format supported by NuWLS, please refer to the MaxSAT Evaluation 2022 rules
+(https://maxsat-evaluations.github.io/2022/rules.html#input).
+
+Format Conversion
+----
+You can use the code available here (https://bitbucket.org/fbacchus/maxsat_benchmarks_code_base/src/master/) to convert new format to the old format.
+
 Contact
 ----
 Questions and suggestions can be sent to jzzheng@hust.edu.cn. <br> <br>
